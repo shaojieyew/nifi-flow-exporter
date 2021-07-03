@@ -21,21 +21,21 @@ public class NifiFlowPathMetricsExporter extends Exporter{
             flowLatencyGauge =  Gauge.build()
                     .name("nifi_flow_latency")
                     .help("measure of latency in a chain of processors in millisec")
-                    .labelNames("process_group", "process_group_id", "processor_path", "starting_process", "starting_process_id", "processor_name", "id")
+                    .labelNames("process_group", "process_group_id", "processor_path", "processor_type", "starting_process", "starting_process_id", "starting_process_type", "processor_name", "id")
                     .register();
         }
         if(flowCongestionGauge==null){
             flowCongestionGauge =  Gauge.build()
                     .name("nifi_flow_congestion")
                     .help("max congestion rate in a chain of processors")
-                    .labelNames("process_group", "process_group_id", "processor_path", "starting_process", "starting_process_id", "processor_name", "id")
+                    .labelNames("process_group", "process_group_id", "processor_path", "processor_type", "starting_process", "starting_process_id", "starting_process_type", "processor_name", "id")
                     .register();
         }
         if(flowRunStateGauge==null){
             flowRunStateGauge =  Gauge.build()
                     .name("nifi_flow_running_state")
                     .help("running state of a flow path")
-                    .labelNames("process_group", "process_group_id", "processor_path", "starting_process", "starting_process_id", "processor_name", "id")
+                    .labelNames("process_group", "process_group_id", "processor_path", "processor_type", "starting_process", "starting_process_id", "starting_process_type", "processor_name", "id")
                     .register();
         }
     }
@@ -49,8 +49,10 @@ public class NifiFlowPathMetricsExporter extends Exporter{
                     flow.getEndComponent().getGroup(),
                     flow.getEndComponent().getGroupId(),
                     flow.getEndComponent().getFlowPath(),
+                    flow.getEndComponent().getType(),
                     flow.getStartComponent().getName(),
                     flow.getStartComponent().getId(),
+                    flow.getStartComponent().getType(),
                     flow.getEndComponent().getName(),
                     flow.getEndComponent().getId()
             };

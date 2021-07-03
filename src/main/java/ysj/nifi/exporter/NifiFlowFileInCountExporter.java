@@ -21,11 +21,10 @@ public class NifiFlowFileInCountExporter extends Exporter{
             flowFileGauge =  Gauge.build()
                     .name("nifi_flow_file_metrics")
                     .help("number of flowfile in and out / byte over 5min")
-                    .labelNames("process_group", "process_group_id", "processor_path", "starting_process", "starting_process_id", "processor_name", "id", "type")
+                    .labelNames("process_group", "process_group_id", "processor_path", "processor_type", "starting_process", "starting_process_id", "starting_process_type", "processor_name", "id", "type")
                     .register();
         }
     }
-
 
     public void export() throws LoginException, IOException {
         Set<FlowPath> flowPaths = NifiMetricsCrawler.getFlowPath();
@@ -35,8 +34,10 @@ public class NifiFlowFileInCountExporter extends Exporter{
                     flow.getEndComponent().getGroup(),
                     flow.getEndComponent().getGroupId(),
                     flow.getEndComponent().getFlowPath(),
+                    flow.getEndComponent().getType(),
                     flow.getStartComponent().getName(),
                     flow.getStartComponent().getId(),
+                    flow.getStartComponent().getType(),
                     flow.getEndComponent().getName(),
                     flow.getEndComponent().getId()
             };
